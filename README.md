@@ -19,9 +19,16 @@ A disk backed LRU Cache, implemented using Java. As of now, it can be used as a 
 
 7. A journal is maintained where each keys are logged based on keys added, accessed or evicted (represented by a number and the key itself)
 
-8. This is originally an Eclipse Project
+8. Use TestClass.java to test the library. Some boilerplate code has been provided.
 
-9. Use TestClass.java to test the library. Some boilerplate code has been provided.
+# Build / Runtime Environment
+
+Ubuntu 16.04.2 LTS
+javac 1.8.0_131
+openjdk version "1.8.0_131"
+OpenJDK Runtime Environment (build 1.8.0_131-8u131-b11-2ubuntu1.16.04.3-b11)
+OpenJDK 64-Bit Server VM (build 25.131-b11, mixed mode)
+Eclipse IDE
   
 # API Usage
 
@@ -40,8 +47,11 @@ public short put(K key, V value);
 Retuns a status indicating ERROR, LAZY_LOAD_KEY, KEY_NOT_FOUND. It updates the value if key was already present. O(1) space and time.
 
 ERROR = > There was an internal error processing the request
+
 KEY_FOUND => The key exists in cache
+
 KEY_NOT_FOUND => The key does not exist in cache / disk (based on method call get or put respectively)
+
 LAZY_LOAD_KEY => The key is a valid key but is absent in the cache and will be lazily loaded
 
 Neither null keys nor null values are supported.
@@ -59,6 +69,9 @@ Neither null keys nor null values are supported.
 5. Exception / Error handling can be improved.
 
 # Initial System Considerations for load testing to plan sizing
+
 1. A quad core CPU to start with, with 2 threads per core so a total of 8 threads. Can be increased based on payload / observations.
+
 2. RAM / Memory requirements can be computed as per the size of one key value pair and amount to be cached at a given time.
+
 3. Use disks in RAID 1 - gives mirroring capabilities which is robust & provides capabilities to handle twice the amount reads.
