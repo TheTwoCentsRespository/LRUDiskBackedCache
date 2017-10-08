@@ -24,10 +24,15 @@ A disk backed LRU Cache, implemented using Java. As of now, it can be used as a 
 # Build / Runtime Environment
 
 Ubuntu 16.04.2 LTS
+
 javac 1.8.0_131
+
 openjdk version "1.8.0_131"
+
 OpenJDK Runtime Environment (build 1.8.0_131-8u131-b11-2ubuntu1.16.04.3-b11)
+
 OpenJDK 64-Bit Server VM (build 25.131-b11, mixed mode)
+
 Eclipse IDE
   
 # API Usage
