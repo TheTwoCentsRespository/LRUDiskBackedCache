@@ -1,7 +1,7 @@
 # LRUDiskBackedCache
 Java implementation of a Disk Backed LRU Cache
 
-A disk backed LRU Cache, implemented using Java. As of now, it can be used as a library which will be tightly coupled with the underlying code. In order to make this library scalable as a service, a wrapper can be made using the library which exposes the features as a service over TCP / IP. The Cache can be used in a multi-threaded environment and is heavily read-optimized assuming majority of the payload / queries will be read-intensive.
+A disk backed LRU Cache, implemented using Java. As of now, it can be used as a library which will be tightly coupled with the underlying code. In order to make this library scalable as a service, a wrapper can be made using the library which exposes the APIs as a service over TCP / IP. The Cache can be used in a multi-threaded environment and is heavily read-optimized assuming majority of the payload / queries will be read-intensive.
 
 # Overall notes about the library & initial assumptions
 
@@ -36,7 +36,7 @@ public static <K, V extends Serializable> LRUDiskBackedCache<K, V> getLRUDiskBac
 
 Method returns a singleton LRUDiskBackedCache instance. Need to provide capacity of the cache, and the directory where the files would be created.
 
-O(1) time complexity and O(j+k) space complexity. Where j is the number of keys. Not exactly j+k, since memory is allocated up-front to reserve space for references and not the actual data themselves. Also k <= n, where n is a much larger key-value store that is saved on the disk and only a subset resides in the cache. Also  When the cache is full, it will reserve Theta(2k) space but only accounting for references since both Linked List and Hash Map will have a copy of the data.
+O(1) time complexity and O(j+k) space complexity. Where j is the number of keys. Not exactly j+k, since memory is allocated up-front to reserve space for references and not the actual data themselves (Concurrent HashMap). Also k <= n, where n is a much larger key-value store that is saved on the disk and only a subset resides in the cache. Also  When the cache is full, it will reserve Theta(2k) space but only accounting for references since both Linked List and Hash Map will have a copy of the data.
 
 public LRURetrivedDataClass<V> get(K key);
   
@@ -62,7 +62,7 @@ Neither null keys nor null values are supported.
 
 2. For a large number of files, management of the files may become difficult if stored in one directory, hence a logic can be implemented which can distribute files across directories.
 
-3. The disk backed journal can be used to replay the logs for the cache to warm-up to its backed-up state on startup. 
+3. The disk backed journal can be used to replay the logs for the cache to warm-up to its last state on cold startup. 
 
 4. Journal can be periodically compressed.
 
